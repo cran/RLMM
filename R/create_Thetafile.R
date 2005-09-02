@@ -45,21 +45,21 @@ write.theta <- function(babe,bits,num.samp,num.probes,thetafile)
 {
 
 snpid <- snpnames[babe]
+
 print(snpid)
 training.size <- length(bits)
-
 idx <- babe
 
 num.samp-> NUMSAMP
-x40 <- matrix(20,NUMSAMP)
+x40 <- matrix(num.probes,NUMSAMP)
 st <- (idx-1)*num.probes + 1
 fn <- (idx-1)*num.probes + num.probes 
 x40 <- PROBEDAT[st:fn,]			#extract the probe data; used to be PROBEDAT
 
 
 y<- x40[1:num.probes,]
-y.A <- y[1:10,bits]
-y.B <- y[11:20,bits]
+y.A <- y[1:(num.probes/2),bits]
+y.B <- y[(num.probes/2+1):(num.probes),bits]
 
 aa <- RMA(y.A,y.B)	#Obtain theta for all the samples
 
@@ -87,10 +87,10 @@ list.files(probefiledir)
 setwd(probefiledir)
 dirFiles <- list.files()
 normfiles <- dirFiles[grep(".norm",dirFiles)]
-rawfiles <- dirFiles[grep(".raw",dirFiles)]
-arawfile <- rawfiles[1]
-fn <- read.table(rawfiles[1],as.is=T)
+anormfile <- normfiles[1]
+fn <- read.table(normfiles[1],as.is=T)
 snpnames <- fn[,1]
+num.probes<-ncol(fn)-1
 
 NUMSAMP <- length(normfiles)
 print(paste("Total number of .norm files found in probefiledir:",NUMSAMP))
@@ -111,31 +111,32 @@ NUMSNP <- length(snpnames)
 
 print(paste("NUMSNP is", NUMSNP))
 print(paste("NUMSAMP is", NUMSAMP))
+print(paste("Num of probes are ", num.probes))
 
-if(start<1 || start>NUMSNP)
-   start <- 1
+if(start<1 | start>NUMSNP) { start <- 1}
  
-if(end==-1 || end>NUMSNP)
-   end <- NUMSNP
+if(end==-1 | end>NUMSNP) { end <- NUMSNP}
 
 if (start>end)
-   stop("start value is greater than the end value, please change")
+   {stop("start value is greater than the end value, please change")}
 
-PROBEDAT <- matrix(-1,NUMSNP*20,NUMSAMP)
+PROBEDAT <- matrix(-1,NUMSNP*(num.probes),NUMSAMP)
 for (j in 1:NUMSAMP) # of normfiles
 {
 d <- paste(normfiles[j],sep="")
 d <- as.character(normfiles[j])
 print(paste("Processing ",d))
 temp <- read.table(d,as.is=T)
-PROBEDAT[,j] <- temp[,1]
+temp <- temp[,-1]
+PROBEDAT[,j] <- as.numeric(t(temp))
 }
+
 
 babe <- seq(start,end,1)
 
 tr.bits <- seq(1,NUMSAMP,1)	#Get the theta's for all the samples together
 setwd(currentdir)
-RES <- apply(t(babe),2,write.theta,bits=tr.bits,num.samp=NUMSAMP,num.probes=20,thetafile=thetafile)
+RES <- apply(t(babe),2,write.theta,bits=tr.bits,num.samp=NUMSAMP,num.probes=num.probes,thetafile=thetafile)
 
 rm(PROBEDAT)
 #END WRITE_THETA function
