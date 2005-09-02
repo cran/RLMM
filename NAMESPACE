@@ -1,0 +1,7 @@
+importFrom(graphics, legend, par, plot)
+importFrom(grDevices, dev.off, postscript)
+importFrom(MASS, rlm)
+importFrom(stats, coefficients, mahalanobis)
+importFrom(utils, read.table, write.table)
+
+export(Classify, create_Thetafile, normalize_Rawfiles, plot_theta)

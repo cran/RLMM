@@ -76,8 +76,6 @@ return(res)
 
 # ==================================================================================
 # Main
-library(MASS)
-
 if(thetafile=="")
    stop("Please specify a name for the thetafile parameter")
 
