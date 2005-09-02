@@ -1,5 +1,5 @@
 Package: RLMM
-Version: 1.8.0
+Version: 1.10.0
 Date: 2005-09-02
 Title: A Genotype Calling Algorithm for Affymetrix SNP Arrays
 Author: Nusrat Rabbee <nrabbee@post.harvard.edu>, Gary Wong
@@ -21,6 +21,6 @@ SystemRequirements: Internal files Xba.CQV, Xba.regions (or other
         regions file)
 URL: http://www.stat.berkeley.edu/users/nrabbee/RLMM
 biocViews: Microarray, OneChannel, SNP, GeneticVariability
-Packaged: 2009-11-12 09:26:26 UTC; biocbuild
+Packaged: 2010-04-22 23:01:23 UTC; biocbuild
 Repository: CRAN
-Date/Publication: 2009-11-13 10:42:45
+Date/Publication: 2010-05-01 12:45:11
